@@ -1,6 +1,6 @@
-import formidable from 'formidable';
+// pages/api/upload.js
 import fs from 'fs';
-import path from 'path';
+import formidable from 'formidable';
 
 export const config = {
   api: {
@@ -8,17 +8,10 @@ export const config = {
   },
 };
 
-const uploadDir = path.resolve('./public/uploads');
-
-if (!fs.existsSync(uploadDir)) {
-  fs.mkdirSync(uploadDir, { recursive: true });
-}
-
 export default function handler(req, res) {
-  const form = new formidable.IncomingForm({
-    uploadDir,
-    keepExtensions: true,
-  });
+  const form = new formidable.IncomingForm();
+  form.uploadDir = './public/uploads'; // Adjust this path as necessary
+  form.keepExtensions = true;
 
   form.parse(req, (err, fields, files) => {
     if (err) {
